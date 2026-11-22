@@ -1,35 +1,39 @@
-import { resetPasswordApi } from '@api';
+import { Preloader } from '@ui';
 import { ResetPasswordUI } from '@ui-pages';
-import { type SyntheticEvent, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
+
+import { selectUser } from '@services/selectors';
+import { resetPassword } from '@services/slices';
+import { useDispatch, useSelector } from '@services/store';
+
+import type { SyntheticEvent } from 'react';
 
 export const ResetPassword = (): React.JSX.Element => {
-  const navigate = useNavigate();
+  const [canReset] = useState(() => !!localStorage.getItem('resetPassword'));
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
-  const [error, setError] = useState<Error | null>(null);
+  const { loading, error } = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: SyntheticEvent): void => {
-    e.preventDefault();
+  const handleSubmit = (event: SyntheticEvent): void => {
+    event.preventDefault();
 
-    setError(null);
-    void resetPasswordApi({ password, token })
-      .then(() => {
-        localStorage.removeItem('resetPassword');
-        void navigate('/login');
-      })
-      .catch((err: Error) => setError(err));
+    if (!loading)
+      void dispatch(resetPassword({ password, token }))
+        .unwrap()
+        .then(() => navigate('/login', { replace: true }))
+        .catch(() => undefined);
   };
 
-  useEffect(() => {
-    if (!localStorage.getItem('resetPassword')) {
-      void navigate('/forgot-password', { replace: true });
-    }
-  }, [navigate]);
+  if (loading) return <Preloader />;
+
+  if (!canReset) return <Navigate to="/forgot-password" replace />;
 
   return (
     <ResetPasswordUI
-      errorText={error?.message}
+      errorText={error ?? undefined}
       password={password}
       token={token}
       setPassword={setPassword}

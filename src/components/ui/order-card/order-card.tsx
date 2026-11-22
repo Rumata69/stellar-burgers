@@ -30,17 +30,21 @@ export const OrderCardUI = memo(function OrderCardUI({
           <FormattedDate date={orderInfo.date} />
         </span>
       </div>
+
       <h4 className={`pt-6 text text_type_main-medium ${styles.order_name}`}>
         {orderInfo.name}
       </h4>
-      {location.pathname === '/profile/orders' && (
+
+      {locationState.background.pathname.startsWith('/profile/orders') && (
         <OrderStatus status={orderInfo.status} />
       )}
+
       <div className={`pt-6 ${styles.order_content}`}>
         <ul className={styles.ingredients}>
           {orderInfo.ingredientsToShow.map((ingredient, index) => {
             const zIndex = maxIngredients - index;
             const right = 20 * index;
+
             return (
               <li
                 className={styles.img_wrap}
