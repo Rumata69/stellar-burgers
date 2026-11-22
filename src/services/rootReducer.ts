@@ -1,10 +1,13 @@
 import { combineReducers } from '@reduxjs/toolkit';
 
-import { constructorSlice, ingredientsSlice, ordersSlice, userSlice } from './slices';
+import constructorReducer from './slices/constructor';
+import ingredientsReducer from './slices/ingredients';
+import ordersReducer from './slices/orders';
+import userReducer from './slices/user';
 
 export const rootReducer = combineReducers({
-  ingredients: ingredientsSlice.reducer,
-  burgerConstructor: constructorSlice.reducer,
-  orders: ordersSlice.reducer,
-  user: userSlice.reducer,
+  ingredients: ingredientsReducer,
+  burgerConstructor: constructorReducer,
+  orders: ordersReducer,
+  user: userReducer,
 });

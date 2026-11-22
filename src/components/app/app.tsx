@@ -203,7 +203,7 @@ const App = (): React.JSX.Element => {
           <Route
             path="/feed/:number"
             element={
-              <Modal title="Информация о заказе" onClose={closeModal}>
+              <Modal title="" onClose={closeModal}>
                 <IngredientsGate>
                   <OrderInfo />
                 </IngredientsGate>
@@ -214,7 +214,7 @@ const App = (): React.JSX.Element => {
             path="/profile/orders/:number"
             element={
               <ProtectedRoute>
-                <Modal title="Информация о заказе" onClose={closeModal}>
+                <Modal title="" onClose={closeModal}>
                   <IngredientsGate>
                     <OrderInfo />
                   </IngredientsGate>

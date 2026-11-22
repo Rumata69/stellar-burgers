@@ -70,7 +70,9 @@ export const OrderInfo = (): React.JSX.Element => {
 
   return (
     <>
-      <p className="text text_type_digits-default">#{orderInfo.number}</p>
+      <p className="text text_type_digits-default">
+        #{String(orderInfo.number).padStart(6, '0')}
+      </p>
       <OrderInfoUI orderInfo={orderInfo} />
     </>
   );
